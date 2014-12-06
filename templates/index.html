@@ -1,4 +1,5 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
     <title>Hacker News TLDR</title>
     <link href="static/bootstrap.min.css" rel="stylesheet">
@@ -7,10 +8,11 @@
             color: blue;
         }
     </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
     <h1><a href="https://news.ycombinator.com">Hacker News</a> TLDR</h1>
-    <div class="panel-group" id="accordion">
+    <div class="panel-group" id="accordion" class="container">
     {% for story in stories %}
 
         <div class="panel panel-default" id="panel{{ loop.index }}">
