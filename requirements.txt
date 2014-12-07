@@ -14,3 +14,5 @@ py==1.4.26
 pytest==2.6.4
 redis==2.10.3
 six==1.8.0
+requests==2.5.0
+responses==0.3.0
