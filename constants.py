@@ -6,6 +6,7 @@ URL = 'url'
 BODY = 'body'
 SENTENCES = 'sentences'
 HACKER_NEWS_ID = 'hn_id'
+TEXT = 'text'
 APP_ID = os.environ.get('AYLIENID')
 APP_KEY = os.environ.get('AYLIENKEY')
 REDIS_HOST = os.environ.get('REDIS_HOST')
