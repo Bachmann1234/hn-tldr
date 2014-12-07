@@ -5,7 +5,6 @@ Werkzeug==0.9.6
 aiohttp==0.11.0
 asyncio-redis==0.13.4
 aylien-apiclient==0.1.0
-blessings==1.6
 coverage==3.7.1
 gunicorn==19.1.1
 httplib2==0.9
