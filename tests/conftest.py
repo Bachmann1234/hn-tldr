@@ -1,6 +1,17 @@
 import json
-from constants import TOP_STORIES_KEY, BODY, SENTENCES, URL, TITLE, TEXT
+from constants import AYLIEN_ID, REDIS_PORT, REDIS_PASS, REDIS_HOST, TOP_STORIES_KEY, BODY, TEXT, SENTENCES, TITLE, URL
+from constants import AYLIEN_KEY
+from main import app
 import pytest
+
+
+@pytest.fixture(autouse=True)
+def setup_environment(monkeypatch):
+    monkeypatch.setenv(AYLIEN_ID, 'fakeid')
+    monkeypatch.setenv(AYLIEN_KEY, 'fakekey')
+    monkeypatch.setenv(REDIS_HOST, 'fakehost')
+    monkeypatch.setenv(REDIS_PORT, '23123')
+    monkeypatch.setenv(REDIS_PASS, 'fakepass')
 
 
 @pytest.fixture()
@@ -35,3 +46,8 @@ def fake_redis_store():
             }
         ).encode('utf-8')
     }
+
+
+@pytest.fixture
+def test_app():
+    return app.test_client()

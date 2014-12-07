@@ -5,7 +5,8 @@ import urllib
 import aiohttp
 import asyncio_redis
 from asyncio_redis.encoders import BytesEncoder
-from constants import TOP_STORIES_KEY, URL, TITLE, BODY, APP_ID, APP_KEY, REDIS_PORT, REDIS_PASS, REDIS_HOST
+from constants import TOP_STORIES_KEY, URL, TITLE, BODY, REDIS_PORT, REDIS_PASS, REDIS_HOST, \
+    get_environment, AYLIEN_ID, AYLIEN_KEY
 import requests
 
 TOP_100_URL = 'https://hacker-news.firebaseio.com/v0/topstories.json'
@@ -18,12 +19,13 @@ def top_30_hn_ids():
 
 @asyncio.coroutine
 def summarize_url(story_id, title, url, redis_connection):
+    environment = get_environment()
     aylein_url = 'https://api.aylien.com/api/v1/summarize?url={}'
     headers = {
         'Accept': 'application/json',
         'Content-type': 'application/x-www-form-urlencoded',
-        'X-AYLIEN-TextAPI-Application-ID': APP_ID,
-        'X-AYLIEN-TextAPI-Application-Key': APP_KEY
+        'X-AYLIEN-TextAPI-Application-ID': environment[AYLIEN_ID],
+        'X-AYLIEN-TextAPI-Application-Key': environment[AYLIEN_KEY]
     }
     response = yield from aiohttp.request(
         'GET',
@@ -58,10 +60,11 @@ def story_url(story_id, redis_connection):
 
 
 def main():
+    environment = get_environment()
     connection = yield from asyncio_redis.Connection.create(
-        host=REDIS_HOST,
-        port=int(REDIS_PORT),
-        password=REDIS_PASS.encode('utf-8'),
+        host=environment[REDIS_HOST],
+        port=environment[REDIS_PORT],
+        password=environment[REDIS_PASS].encode('utf-8'),
         encoder=BytesEncoder()
     )
     top_stories = top_30_hn_ids()
