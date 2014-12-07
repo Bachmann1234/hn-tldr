@@ -1,6 +1,7 @@
 import json
-from constants import AYLIEN_ID, REDIS_PORT, REDIS_PASS, REDIS_HOST, TOP_STORIES_KEY, BODY, TEXT, SENTENCES, TITLE, URL
-from constants import AYLIEN_KEY
+from constants import (AYLIEN_ID, REDIS_PORT, REDIS_PASS,
+                       REDIS_HOST, TOP_STORIES_KEY, BODY,
+                       TEXT, SENTENCES, TITLE, URL, AYLIEN_KEY)
 from main import app
 import pytest
 
@@ -17,7 +18,9 @@ def setup_environment(monkeypatch):
 @pytest.fixture()
 def fake_redis_store():
     return {
-        TOP_STORIES_KEY: json.dumps([8712349, 8712417, 8712277]).encode('utf-8'),
+        TOP_STORIES_KEY: json.dumps(
+            [8712349, 8712417, 8712277]
+        ).encode('utf-8'),
         b'8712349': json.dumps(
             {BODY: {
                 TEXT: 'one\ntwo\nthree',

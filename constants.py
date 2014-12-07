@@ -22,4 +22,3 @@ def get_environment():
         REDIS_PORT: int(os.environ.get(REDIS_PORT), 0),
         REDIS_PASS: os.environ.get(REDIS_PASS),
     }
-
