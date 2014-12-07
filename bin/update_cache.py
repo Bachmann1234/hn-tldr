@@ -32,11 +32,13 @@ def summarize_url(story_id, title, url, redis_connection):
     )
     response_body = yield from response.read()
     response_body = json.loads(response_body.decode('utf-8'))
-    yield from redis_connection.set(str(story_id).encode('utf-8'), json.dumps(
+    redis_key = str(story_id).encode('utf-8')
+    yield from redis_connection.set(redis_key, json.dumps(
         {URL: url,
          TITLE: title,
          BODY: response_body}).encode('utf-8')
     )
+    yield from redis_connection.expire(redis_key, (60 * 60 * 24 * 3))  # Expire after 3 days
 
 
 @asyncio.coroutine
