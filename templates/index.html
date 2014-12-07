@@ -41,6 +41,9 @@
             <div id="collapse{{ loop.index }}" class="panel-collapse collapse">
                 <div class="panel-body">
                      <ul>
+                        {% if not story.body.sentences %}
+                            Unable to generate summary
+                        {% endif %}
                         {% for sentence in story.body.sentences %}
                             <li>{{ sentence }}</li>
                         {% endfor %}
