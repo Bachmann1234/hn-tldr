@@ -1,7 +1,7 @@
 import json
 from constants import (AYLIEN_ID, REDIS_PORT, REDIS_PASS,
                        REDIS_HOST, TOP_STORIES_KEY, BODY,
-                       TEXT, SENTENCES, TITLE, URL, AYLIEN_KEY)
+                       TEXT, SENTENCES, TITLE, URL, AYLIEN_KEY, DATE_FOUND)
 from main import app
 import pytest
 
@@ -27,7 +27,8 @@ def fake_redis_store():
                 SENTENCES: ['one', 'two', 'three']
             },
                 URL: 'http://totalurl.com',
-                TITLE: 'I am a title!'
+                TITLE: 'I am a title!',
+                DATE_FOUND: '2014-12-08 02:04:36.143372'
             }
         ).encode('utf-8'),
         b'8712417': json.dumps(
@@ -36,7 +37,8 @@ def fake_redis_store():
                 SENTENCES: ['four', 'five', 'six']
             },
                 URL: 'http://real.com',
-                TITLE: 'I am a second title!'
+                TITLE: 'I am a second title!',
+                DATE_FOUND: '2014-12-08 02:05:18.078519'
             }
         ).encode('utf-8'),
         b'8712277': json.dumps(
@@ -45,7 +47,8 @@ def fake_redis_store():
                 SENTENCES: []  # Sometimes api fails to summarize
             },
                 URL: 'http://imathingy.com',
-                TITLE: 'I am a third title!'
+                TITLE: 'I am a third title!',
+                DATE_FOUND: '2014-12-08 02:05:28.326434'
             }
         ).encode('utf-8')
     }

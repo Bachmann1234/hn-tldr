@@ -15,3 +15,18 @@ def test_main_route(test_app, fake_redis_store):
         ) as resource:
             assert (response.data.decode('utf-8') ==
                     resource.read())
+
+
+def test_rss(test_app, fake_redis_store):
+    with patch(
+            'redis.StrictRedis',
+            return_value=fake_redis_store
+    ):
+        response = test_app.get('/hn-tldr.atom')
+        assert response.status_code == 200
+        with open(
+                get_resource_path('rss_example.txt'),
+                'r'
+        ) as resource:
+            assert (response.data.decode('utf-8') ==
+                    resource.read())
