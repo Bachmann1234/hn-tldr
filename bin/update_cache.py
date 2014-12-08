@@ -18,14 +18,13 @@ def top_30_hn_ids():
 
 
 @asyncio.coroutine
-def summarize_url(story_id, title, url, redis_connection):
-    environment = get_environment()
+def analyze_url(url, api_id, api_key):
     aylein_url = 'https://api.aylien.com/api/v1/summarize?url={}'
     headers = {
         'Accept': 'application/json',
         'Content-type': 'application/x-www-form-urlencoded',
-        'X-AYLIEN-TextAPI-Application-ID': environment[AYLIEN_ID],
-        'X-AYLIEN-TextAPI-Application-Key': environment[AYLIEN_KEY]
+        'X-AYLIEN-TextAPI-Application-ID': api_id,
+        'X-AYLIEN-TextAPI-Application-Key': api_key
     }
     response = yield from aiohttp.request(
         'GET',
@@ -33,13 +32,28 @@ def summarize_url(story_id, title, url, redis_connection):
         headers=headers
     )
     response_body = yield from response.read()
-    response_body = json.loads(response_body.decode('utf-8'))
+    return json.loads(response_body.decode('utf-8'))
+
+
+@asyncio.coroutine
+def cache_summary_of_url(story_id, title, url, redis_connection):
+    environment = get_environment()
     redis_key = str(story_id).encode('utf-8')
-    yield from redis_connection.set(redis_key, json.dumps(
-        {URL: url,
-         TITLE: title,
-         BODY: response_body}).encode('utf-8')
+    response = yield from redis_connection.get(
+        redis_key
     )
+    if not response:
+        summary = yield from analyze_url(
+            url,
+            environment[AYLIEN_ID],
+            environment[AYLIEN_KEY]
+        )
+
+        yield from redis_connection.set(redis_key, json.dumps(
+            {URL: url,
+             TITLE: title,
+             BODY: summary}).encode('utf-8')
+        )
     yield from redis_connection.expire(
         redis_key,
         (60 * 60 * 24 * 3)  # Expire after 3 days
@@ -47,7 +61,7 @@ def summarize_url(story_id, title, url, redis_connection):
 
 
 @asyncio.coroutine
-def story_url(story_id, redis_connection):
+def cache_story(story_id, redis_connection):
     response = yield from aiohttp.request('GET', STORY_URL.format(story_id))
     if response.status == 200:
         body = yield from response.read()
@@ -55,18 +69,9 @@ def story_url(story_id, redis_connection):
         url = body[URL]
         title = body[TITLE]
         if url:
-            response = yield from redis_connection.get(
-                str(story_id).encode('utf-8')
-            )
-            if not response:
-                yield from summarize_url(
-                    story_id,
-                    title,
-                    url,
-                    redis_connection
-                )
+            yield from cache_summary_of_url(story_id, title, url, redis_connection)
     else:
-        print("Failed to get story: {}".format(story_id))
+        print("Failed to cache story: {}".format(story_id))
 
 
 def main():
@@ -83,7 +88,7 @@ def main():
         json.dumps(top_stories).encode(u'utf-8')
     )
     yield from asyncio.gather(
-        *[asyncio.Task(story_url(story_id, connection))
+        *[asyncio.Task(cache_story(story_id, connection))
           for story_id in top_stories]
     )
     connection.close()
