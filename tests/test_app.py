@@ -22,7 +22,7 @@ def test_rss(test_app, fake_redis_store):
             'redis.StrictRedis',
             return_value=fake_redis_store
     ):
-        response = test_app.get('/hn-tldr.atom')
+        response = test_app.get('/feed.atom')
         assert response.status_code == 200
         with open(
                 get_resource_path('rss_example.txt'),

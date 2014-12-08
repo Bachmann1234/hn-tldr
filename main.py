@@ -1,6 +1,7 @@
 from datetime import datetime
 from urllib.parse import urljoin
-from constants import REDIS_HOST, REDIS_PORT, REDIS_PASS, get_environment, URL, TITLE, SENTENCES, BODY, DATE_FOUND
+from constants import REDIS_HOST, REDIS_PORT, REDIS_PASS, get_environment, URL, TITLE, SENTENCES, BODY, DATE_FOUND, \
+    HACKER_NEWS_ID
 from flask import Flask, render_template, request
 import redis
 from utils import get_stories
@@ -19,7 +20,7 @@ def _get_stories():
     return get_stories(r)
 
 
-@app.route('/hn-tldr.atom')
+@app.route('/feed.atom')
 def rss():
     feed = AtomFeed('Hacker News TLDR',
                     feed_url=request.url, url=request.url_root)
@@ -33,6 +34,11 @@ def rss():
                     "<li>{}</li>".format(
                         sentence
                     ) for sentence in story[BODY][SENTENCES]
+                )
+            )
+            body += "<br/><a href={}>HN Comments</a>".format(
+                'https://news.ycombinator.com/item?id={}'.format(
+                    story[HACKER_NEWS_ID]
                 )
             )
         feed.add(story[TITLE], body,
