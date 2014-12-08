@@ -1,12 +1,13 @@
 #!/usr/bin/env python
 import asyncio
+import datetime
 import json
 import urllib
 import aiohttp
 import asyncio_redis
 from asyncio_redis.encoders import BytesEncoder
 from constants import TOP_STORIES_KEY, URL, TITLE, BODY, REDIS_PORT, REDIS_PASS, REDIS_HOST, \
-    get_environment, AYLIEN_ID, AYLIEN_KEY
+    get_environment, AYLIEN_ID, AYLIEN_KEY, DATE_FOUND
 import requests
 
 TOP_100_URL = 'https://hacker-news.firebaseio.com/v0/topstories.json'
@@ -52,7 +53,8 @@ def cache_summary_of_url(story_id, title, url, redis_connection):
         yield from redis_connection.set(redis_key, json.dumps(
             {URL: url,
              TITLE: title,
-             BODY: summary}).encode('utf-8')
+             BODY: summary,
+             DATE_FOUND: datetime.datetime.now()}).encode('utf-8')
         )
     yield from redis_connection.expire(
         redis_key,
