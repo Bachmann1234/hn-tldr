@@ -54,7 +54,7 @@ def cache_summary_of_url(story_id, title, url, redis_connection):
             {URL: url,
              TITLE: title,
              BODY: summary,
-             DATE_FOUND: datetime.datetime.now()}).encode('utf-8')
+             DATE_FOUND: str(datetime.datetime.now())}).encode('utf-8')
         )
     yield from redis_connection.expire(
         redis_key,
