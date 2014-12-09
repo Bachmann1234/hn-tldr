@@ -10,12 +10,12 @@ from constants import TOP_STORIES_KEY, URL, TITLE, BODY, REDIS_PORT, REDIS_PASS,
     get_environment, AYLIEN_ID, AYLIEN_KEY, DATE_FOUND
 import requests
 
-TOP_100_URL = 'https://hacker-news.firebaseio.com/v0/topstories.json'
+TOP_STORIES_URL = 'https://hacker-news.firebaseio.com/v0/topstories.json'
 STORY_URL = 'https://hacker-news.firebaseio.com/v0/item/{}.json'
 
 
-def top_30_hn_ids():
-    return requests.get(TOP_100_URL).json()[:30]
+def top_hn_ids():
+    return requests.get(TOP_STORIES_URL).json()
 
 
 @asyncio.coroutine
@@ -84,7 +84,7 @@ def main():
         password=environment[REDIS_PASS].encode('utf-8'),
         encoder=BytesEncoder()
     )
-    top_stories = top_30_hn_ids()
+    top_stories = top_hn_ids()
     yield from connection.set(
         TOP_STORIES_KEY,
         json.dumps(top_stories).encode(u'utf-8')
