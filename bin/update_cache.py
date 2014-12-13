@@ -71,7 +71,12 @@ def cache_story(story_id, redis_connection):
         url = body[URL]
         title = body[TITLE]
         if url:
-            yield from cache_summary_of_url(story_id, title, url, redis_connection)
+            yield from cache_summary_of_url(
+                story_id,
+                title,
+                url,
+                redis_connection
+            )
     else:
         print("Failed to cache story: {}".format(story_id))
 

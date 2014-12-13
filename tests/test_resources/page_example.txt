@@ -26,8 +26,12 @@
 </head>
 <body>
     <h1><a href="https://news.ycombinator.com">Hacker News</a> TLDR</h1>
+    <div>
+        Summaries provided by the <a href="http://aylien.com/">AYLIEN</a> text analysis API<br/>
+        <a href="https://github.com/Bachmann1234/hn-tldr">Code Here</a>
+    </div>
     <div class="panel-group" id="accordion" class="container">
-    
+
 
         <div class="panel panel-default" id="panel1">
             <div class="panel-heading">
@@ -41,19 +45,19 @@
             <div id="collapse1" class="panel-collapse collapse">
                 <div class="panel-body">
                      <ul>
-                        
-                        
+
+
                             <li>one</li>
-                        
+
                             <li>two</li>
-                        
+
                             <li>three</li>
-                        
+
                     </ul>
                 </div>
             </div>
         </div>
-    
+
 
         <div class="panel panel-default" id="panel2">
             <div class="panel-heading">
@@ -67,19 +71,19 @@
             <div id="collapse2" class="panel-collapse collapse">
                 <div class="panel-body">
                      <ul>
-                        
-                        
+
+
                             <li>four</li>
-                        
+
                             <li>five</li>
-                        
+
                             <li>six</li>
-                        
+
                     </ul>
                 </div>
             </div>
         </div>
-    
+
 
         <div class="panel panel-default" id="panel3">
             <div class="panel-heading">
@@ -93,20 +97,16 @@
             <div id="collapse3" class="panel-collapse collapse">
                 <div class="panel-body">
                      <ul>
-                        
+
                             Unable to generate summary
-                        
-                        
+
+
                     </ul>
                 </div>
             </div>
         </div>
-    
+
     </div>
-    <footer>
-        Summaries provided by the <a href="http://aylien.com/">AYLIEN</a> text analysis API
-        <a href="https://github.com/Bachmann1234/hn-tldr">Code Here</a>
-    </footer>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
 </body>

@@ -26,6 +26,10 @@
 </head>
 <body>
     <h1><a href="https://news.ycombinator.com">Hacker News</a> TLDR</h1>
+    <div>
+        Summaries provided by the <a href="http://aylien.com/">AYLIEN</a> text analysis API<br/>
+        <a href="https://github.com/Bachmann1234/hn-tldr">Code Here</a>
+    </div>
     <div class="panel-group" id="accordion" class="container">
     {% for story in stories %}
 
@@ -53,10 +57,6 @@
         </div>
     {% endfor %}
     </div>
-    <footer>
-        Summaries provided by the <a href="http://aylien.com/">AYLIEN</a> text analysis API
-        <a href="https://github.com/Bachmann1234/hn-tldr">Code Here</a>
-    </footer>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
 </body>

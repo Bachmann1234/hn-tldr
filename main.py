@@ -43,7 +43,9 @@ def rss():
             )
         feed.add(story[TITLE], body,
                  content_type='html',
-                 updated=datetime.strptime(story[DATE_FOUND], '%Y-%m-%d %H:%M:%S.%f'),
+                 updated=datetime.strptime(
+                     story[DATE_FOUND],
+                     '%Y-%m-%d %H:%M:%S.%f'),
                  url=urljoin(request.url_root, story[URL]),
                  )
     return feed.get_response()
